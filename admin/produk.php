@@ -70,37 +70,42 @@
 		$path = "../produk/".$random.'.'.$ext;
 		$pathdb = "produk/".$random.'.'.$ext;
 
-
-		if($tipe_file == "image/jpeg" || $tipe_file == "image/png"){
-		  if($ukuran_file <= 5000000){ 
-			if(move_uploaded_file($tmp_file, $path)){ 
-			
-			  $query = "UPDATE produk SET namaproduk='$namaproduk', deskripsi='$deskripsi', rate='$rate', hargabefore='$hargabefore', hargaafter='$hargaafter', gambar='$pathdb' WHERE idproduk = $id ";
-			  $sql = mysqli_query($conn, $query); // Eksekusi/ Jalankan query dari variabel $query
-			  
-			  if($sql){ 
+		if ($_FILES["uploadgambar"]["error"] === 4) {
+            $query = "UPDATE produk SET namaproduk='$namaproduk', deskripsi='$deskripsi', rate='$rate', hargabefore='$hargabefore', hargaafter='$hargaafter' WHERE idproduk = $id ";
+            $sql = mysqli_query($conn, $query);
+        }
+        else{
+			if($tipe_file == "image/jpeg" || $tipe_file == "image/png"){
+			if($ukuran_file <= 5000000){ 
+				if(move_uploaded_file($tmp_file, $path)){ 
 				
-				echo "<br><meta http-equiv='refresh' content='5; URL=produk.php'> You will be redirected to the form in 5 seconds";
+				$query = "UPDATE produk SET namaproduk='$namaproduk', deskripsi='$deskripsi', rate='$rate', hargabefore='$hargabefore', hargaafter='$hargaafter', gambar='$pathdb' WHERE idproduk = $id ";
+				$sql = mysqli_query($conn, $query); // Eksekusi/ Jalankan query dari variabel $query
+				
+				if($sql){ 
 					
-			  }else{
-				// Jika Gagal, Lakukan :
-				echo "Sorry, there's a problem while submitting.";
+					echo "<br><meta http-equiv='refresh' content='5; URL=produk.php'> You will be redirected to the form in 5 seconds";
+						
+				}else{
+					// Jika Gagal, Lakukan :
+					echo "Sorry, there's a problem while submitting.";
+					echo "<br><meta http-equiv='refresh' content='5; URL=produk.php'> You will be redirected to the form in 5 seconds";
+				}
+				}else{
+				// Jika gambar gagal diupload, Lakukan :
+				echo "Sorry, there's a problem while uploading the file.";
 				echo "<br><meta http-equiv='refresh' content='5; URL=produk.php'> You will be redirected to the form in 5 seconds";
-			  }
+				}
 			}else{
-			  // Jika gambar gagal diupload, Lakukan :
-			  echo "Sorry, there's a problem while uploading the file.";
-			  echo "<br><meta http-equiv='refresh' content='5; URL=produk.php'> You will be redirected to the form in 5 seconds";
+				// Jika ukuran file lebih dari 1MB, lakukan :
+				echo "Sorry, the file size is not allowed to more than 1mb";
+				echo "<br><meta http-equiv='refresh' content='5; URL=produk.php'> You will be redirected to the form in 5 seconds";
 			}
-		  }else{
-			// Jika ukuran file lebih dari 1MB, lakukan :
-			echo "Sorry, the file size is not allowed to more than 1mb";
+			}else{
+			// Jika tipe file yang diupload bukan JPG / JPEG / PNG, lakukan :
+			echo "Sorry, the image format should be JPG/PNG.";
 			echo "<br><meta http-equiv='refresh' content='5; URL=produk.php'> You will be redirected to the form in 5 seconds";
-		  }
-		}else{
-		  // Jika tipe file yang diupload bukan JPG / JPEG / PNG, lakukan :
-		  echo "Sorry, the image format should be JPG/PNG.";
-		  echo "<br><meta http-equiv='refresh' content='5; URL=produk.php'> You will be redirected to the form in 5 seconds";
+			}
 		}
 	};
 

@@ -292,13 +292,7 @@ if(isset($_POST['selesai']))
             </div>
         </div>
         <!-- main content area end -->
-        <!-- footer area start-->
-        <footer>
-            <div class="footer-area">
-                <p>By Richard's Lab</p>
-            </div>
-        </footer>
-        <!-- footer area end-->
+
     </div>
     <!-- page container area end -->
 	
