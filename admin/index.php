@@ -2,13 +2,15 @@
 	session_start();
 	include '../dbconnect.php';
 		
-	$itungcust = mysqli_query($conn,"select count(userid) as jumlahcust from login where role='Member'");
-	$itungcust2 = mysqli_fetch_assoc($itungcust);
-	$itungcust3 = $itungcust2['jumlahcust'];
+    // menghitung jumlah pesanan yang masih menunggu verifikasi
+	$verifcount = mysqli_query($conn,"select count(id) as jumlahmenunggu from pendaftaran where status='waiting'");
+	$verifcount2 = mysqli_fetch_assoc($verifcount);
+	$verifcount3 = $verifcount2['jumlahmenunggu'];
 	
-	$itungorder = mysqli_query($conn,"select count(idcart) as jumlahorder from cart where status not like 'Selesai' and status not like 'Canceled'");
-	$itungorder2 = mysqli_fetch_assoc($itungorder);
-	$itungorder3 = $itungorder2['jumlahorder'];
+    // menghitung jumlah kursus yang ada
+	$coursecount = mysqli_query($conn,"select count(id) as jumlahkursus from kursus");
+	$coursecount2 = mysqli_fetch_assoc($coursecount);
+	$coursecount3 = $coursecount2['jumlahkursus'];
 	
 	?>
 
@@ -20,9 +22,8 @@
       type="image/png" 
       href="../favicon.png">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Admin - PetsQu Shop</title>
+    <title>Dashboard Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/png" href="assets/images/icon/favicon.ico">
     <link rel="stylesheet" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/font-awesome.min.css">
     <link rel="stylesheet" href="assets/css/themify-icons.css">
@@ -42,82 +43,15 @@
 </head>
 
 <body>
-    <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-    <!-- preloader area start -->
-    <div id="preloader">
-        <div class="loader"></div>
-    </div>
-    <!-- preloader area end -->
     <!-- page container area start -->
     <div class="page-container">
-        <!-- sidebar menu area start -->
-        <div class="sidebar-menu">
-            <div class="main-menu">
-                <div class="menu-inner">
-                    <nav>
-                        <ul class="metismenu" id="menu">
-							<li class="active"><a href="index.php"><span>Home</span></a></li>
-							<li><a href="../"><span>Kembali ke Toko</span></a></li>
-							<li>
-                                <a href="manageorder.php"><i class="ti-dashboard"></i><span>Kelola Pesanan</span></a>
-                            </li>
-							<li><a href="produk.php"><span>Kelola Produk</span></a></li>
-							<li><a href="customer.php"><span>Kelola Pelanggan</span></a></li>
-							<li><a href="user.php"><span>Kelola Staff</span></a></li>
-                            <li>
-                                <a href="../logout.php"><span>Logout</span></a>
-                                
-                            </li>
-                            
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
-        <!-- sidebar menu area end -->
+        
         <!-- main content area start -->
         <div class="main-content">
-            <!-- header area start -->
-            <div class="header-area">
-                <div class="row align-items-center">
-                    <!-- nav and search button -->
-                    <div class="col-md-6 col-sm-8 clearfix">
-                        <div class="nav-btn pull-left">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
-                    <!-- profile info & task notification -->
-                    <div class="col-md-6 col-sm-4 clearfix">
-                        <ul class="notification-area pull-right">
-                            <li><h3><div class="date">
-								<script type='text/javascript'>
-						<!--
-						var months = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-						var myDays = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-						var date = new Date();
-						var day = date.getDate();
-						var month = date.getMonth();
-						var thisDay = date.getDay(),
-							thisDay = myDays[thisDay];
-						var yy = date.getYear();
-						var year = (yy < 1000) ? yy + 1900 : yy;
-						document.write(thisDay + ', ' + day + ' ' + months[month] + ' ' + year);		
-						//-->
-						</script></b></div></h3>
-
-						</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-			<!-- header area end -->            
+                    
             <!-- page title area end -->
             <div class="main-content-inner">
-			
+			<?php include 'sidebar.php'; ?>
                 
                 <div class="sales-report-area mt-5 mb-5">
                     <div class="row">
@@ -126,10 +60,10 @@
                                 <div class="s-report-inner pr--20 pt--30 mb-3">
                                     <div class="icon"><i class="fa fa-user"></i></div>
                                     <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Pelanggan</h4>
+                                        <h4 class="header-title mb-0">Pesanan Menunggu Verifikasi</h4>
                                     </div>
                                     <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php echo $itungcust3 ?></h1>
+                                        <h1><?php echo $verifcount3 ?></h1>
                                     </div>
 									</div>
                             </div>
@@ -140,10 +74,10 @@
                                 <div class="s-report-inner pr--20 pt--30 mb-3">
                                     <div class="icon"><i class="fa fa-book"></i></div>
                                     <div class="s-report-title d-flex justify-content-between">
-                                        <h4 class="header-title mb-0">Pesanan</h4>
+                                        <h4 class="header-title mb-0">Jumlah Kursus</h4>
                                     </div>
                                     <div class="d-flex justify-content-between pb-2">
-                                        <h1><?php echo $itungorder3 ?></h1>
+                                        <h1><?php echo $coursecount3 ?></h1>
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +98,7 @@
                                 <div class="market-status-table mt-4">
                                     Anda masuk sebagai <strong><?php echo $_SESSION['name'] ?></strong>
 									<br>
-									<p>Pada halaman admin, Anda dapat mengelola produk dan mengelola user dan admin</p>
+									<p>Pada halaman admin, Anda dapat mengelola kursus, user, dan melakukan verifikasi</p>
                                 </div>
                             </div>
                         </div>
@@ -183,33 +117,6 @@
     </div>
     <!-- page container area end -->
 
-    <!-- jquery latest version -->
-    <script src="assets/js/vendor/jquery-2.2.4.min.js"></script>
-    <!-- bootstrap 4 js -->
-    <script src="assets/js/popper.min.js"></script>
-    <script src="assets/js/bootstrap.min.js"></script>
-    <script src="assets/js/owl.carousel.min.js"></script>
-    <script src="assets/js/metisMenu.min.js"></script>
-    <script src="assets/js/jquery.slimscroll.min.js"></script>
-    <script src="assets/js/jquery.slicknav.min.js"></script>
-
-    <!-- start chart js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-    <!-- start highcharts js -->
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <!-- start zingchart js -->
-    <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-    <script>
-    zingchart.MODULESDIR = "https://cdn.zingchart.com/modules/";
-    ZC.LICENSE = ["569d52cefae586f634c54f86dc99e6a9", "ee6b7db5b51705a13dc2339db3edaf6d"];
-    </script>
-    <!-- all line chart activation -->
-    <script src="assets/js/line-chart.js"></script>
-    <!-- all pie chart -->
-    <script src="assets/js/pie-chart.js"></script>
-    <!-- others plugins -->
-    <script src="assets/js/plugins.js"></script>
-    <script src="assets/js/scripts.js"></script>
 </body>
 
 </html>

@@ -1,41 +1,17 @@
-<!-- header -->
-<div class="agileits_header">
+<!-- navigation -->
+<div class="navigation-agileits">
 		<div class="container">
-			<div class="agile-login">
-				<ul>
-				<?php
-				if(!isset($_SESSION['log'])){
-					echo '
-					<li><a href="registered.php"> Register</a></li>
-					<li><a href="login.php">Login</a></li>
-					';
-				} else {
-					
-					if($_SESSION['role']=='Member'){
-					echo '
-					<li style="color:black">Halo, '.$_SESSION["name"].'
-					<li><a href="logout.php">Logout?</a></li>
-					';
-					} else {
-					echo '
-					<li style="color:black">Halo, '.$_SESSION["name"].'
-					<li><a href="admin">Admin Panel</a></li>
-					<li><a href="logout.php">Logout?</a></li>
-					';
-					};
-					
-				}
-				?>
-					
-				</ul>
-			</div>
-
-			<div class="clearfix"> </div>
+			<nav class="navbar navbar-default">
+				<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
+					<ul class="nav navbar-nav">
+						<li><a href="index.php">Home</a></li>
+						<li><a href="kursus.php">Daftar Kursus</a></li>
+						<li><a href="status.php">Cek Status Pendaftaran</a></li>
+						<li><a href="logout.php">Logout</a></li>
+					</ul>
+				</div>
+			</nav>
 		</div>
 	</div>
-
-			
-			<div class="clearfix"> </div>
-		</div>
-	</div>
-<!-- //header -->
+		
+<!-- //navigation -->
